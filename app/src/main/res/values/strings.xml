@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Annoté</string>
+    <string name="placeholderText">Make a grocery list, it will help me concentrate on my study and let me live happily ever after.
+This is what’s actually fine by me, gonna stick to this solution so far.Make a grocery list, it will help me concentrate on my study and let me live happily ever after.
+This is what’s actually fine by me, gonna stick to this solution so far.Make a grocery list, it will help me concentrate on my study and let me live happily ever after.
+This is what’s actually fine by me, gonna stick to this solution so far.Make a grocery list, it will help me concentrate on my study and let me live happily ever after.
+This is what’s actually fine by me, gonna stick to this solution so far.Make a grocery list, it will help me concentrate on my study and let me live happily ever after.
+This is what’s actually fine by me, gonna stick to this solution so far.Make a grocery list, it will help me concentrate on my study and let me live happily ever after.
+This is what’s actually fine by me, gonna stick to this solution so far.</string>
+    <string name="first_day">M</string>
+    <string name="second_day">T</string>
+    <string name="third_day">W</string>
+    <string name="fourth_day">T</string>
+    <string name="fifth_day">F</string>
+    <string name="sixth_day">S</string>
+    <string name="seventh_day">S</string>
+    <string name="choose_where_to_go">Choose where to go</string>
+    <string name="go">Go</string>
+    <string name="delete_button">Delete</string>
+    <string name="save_button">Save</string>
+    <string name="calendar_title">Calendar</string>
+</resources>
