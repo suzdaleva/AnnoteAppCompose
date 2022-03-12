@@ -3,8 +3,8 @@ package com.manicpixie.annoteappcompose.presentation.util
 import androidx.compose.ui.unit.dp
 
 object Constants {
-    const val forwardSpeed = 1.5f
-    const val backwardSpeed = -1.5f
+    const val forwardSpeed = 1f
+    const val backwardSpeed = -1.2f
     val cornerRadiusBig = 9.dp
     val normalElevation = 20.dp
     val cardHeight = 430.dp

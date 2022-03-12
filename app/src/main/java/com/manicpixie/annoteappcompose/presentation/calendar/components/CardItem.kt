@@ -163,7 +163,7 @@ fun CardItem(
                     ) {
                         if (isTodayMonth) {
                             if (recentlyVisited) {
-                                val composition by rememberLottieComposition(
+                                 val composition by rememberLottieComposition(
                                     LottieCompositionSpec.RawRes(
                                         R.raw.checked
                                     )
