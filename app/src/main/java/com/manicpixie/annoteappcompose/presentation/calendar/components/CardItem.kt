@@ -23,11 +23,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.airbnb.lottie.compose.*
 import com.manicpixie.annoteappcompose.R
 import com.manicpixie.annoteappcompose.presentation.calendar.CalendarViewModel
-import com.manicpixie.annoteappcompose.presentation.main.components.noRippleClickable
 import com.manicpixie.annoteappcompose.presentation.util.*
 import com.manicpixie.annoteappcompose.presentation.util.Constants.cornerRadiusBig
 import com.manicpixie.annoteappcompose.presentation.util.Constants.months
@@ -45,13 +43,11 @@ import java.util.*
 @OptIn(ExperimentalFoundationApi::class, androidx.compose.ui.ExperimentalComposeUiApi::class)
 @Composable
 fun CardItem(
-    onClick: () -> Unit,
-    navController: NavController,
+    onClick: (Int?, String) -> Unit,
     modifier: Modifier = Modifier,
     cardIndex: Int,
     viewModel: CalendarViewModel = hiltViewModel()
 ) {
-
 
     val data = mutableListOf<Date>()
 
@@ -74,6 +70,13 @@ fun CardItem(
         data.add(calendar.time)
         calendar.add(Calendar.DAY_OF_MONTH, 1)
     }
+    var animatedTextColorState by remember { mutableStateOf(false) }
+    val startColor = Color.Transparent
+    val endColor = White
+    val animatedTextColor by animateColorAsState(
+        if (animatedTextColorState) endColor else startColor,
+        tween(durationMillis = 1000)
+    )
 
 
     val pageMonth =
@@ -81,11 +84,19 @@ fun CardItem(
 
 
     Card(
+        backgroundColor = White,
         modifier = modifier,
         shape = RoundedCornerShape(cornerRadiusBig),
         elevation = normalElevation
     ) {
-
+        val lottieAnimatable = rememberLottieAnimatable()
+        val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.checked))
+        LaunchedEffect(composition) {
+            delay(100)
+            lottieAnimatable.animate(
+                composition = composition
+            )
+        }
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -131,18 +142,7 @@ fun CardItem(
 
                     var textColor = PrimaryBlack
 
-                    var animatedTextColorState by remember { mutableStateOf(false) }
-                    val startColor = Color.Transparent
-                    val endColor = White
-                    val animatedTextColor by animateColorAsState(
-                        if (animatedTextColorState) endColor else startColor,
-                        tween(durationMillis = 1000)
-                    )
-
-                    val recentlyVisited =
-                        viewModel.noteList.value.notes.filter { it.modify_date.timeInMillis > Calendar.getInstance().timeInMillis - 1000 } ==
-                                viewModel.noteList.value.notes.filter { it.date == day }
-                                && !viewModel.noteList.value.notes.none { it.date == day }
+                    val hasNote = !viewModel.noteList.value.notes.none { it.date == day }
                     Box(
                         modifier = if (isTodayMonth) Modifier
                             .noRippleClickable {
@@ -150,11 +150,10 @@ fun CardItem(
                                     if (viewModel.checkNote(day)) {
                                         val note = viewModel.getNoteByDate(day)
                                         delay(150)
-                                        onClick()
-                                        if (note != null) navController.navigate(Screen.NoteScreen.route + "?noteId=${note.id}&noteDate=${date}")
+                                        if (note != null)
+                                            onClick(note.id!!, date)
                                     } else {
-                                        onClick()
-                                        navController.navigate(Screen.NoteScreen.route + "?noteDate=${date}")
+                                        onClick(null, date)
                                     }
                                 }
                             }
@@ -162,24 +161,16 @@ fun CardItem(
                         contentAlignment = Alignment.Center
                     ) {
                         if (isTodayMonth) {
-                            if (recentlyVisited) {
-                                 val composition by rememberLottieComposition(
-                                    LottieCompositionSpec.RawRes(
-                                        R.raw.checked
-                                    )
-                                )
-                                val progress by animateLottieCompositionAsState(
-                                    clipSpec = LottieClipSpec.Progress(0.1f, 0.95f),
-                                    composition = composition,
-                                    speed = 1.5f
-                                )
+                            if (day == viewModel.noteList.value.recentlyVisited) {
                                 LottieAnimation(
                                     modifier = Modifier.size(43.dp),
-                                    composition = composition,
-                                    progress = progress
+                                    composition = lottieAnimatable.composition,
+                                    progress = lottieAnimatable.progress
                                 )
                                 animatedTextColorState = true
-                            } else if (!viewModel.noteList.value.notes.none { it.date == day }) {
+
+                            }
+                            if (hasNote && day != viewModel.noteList.value.recentlyVisited) {
                                 textColor = White
                                 Image(
                                     modifier = Modifier.size(43.dp),
@@ -188,7 +179,7 @@ fun CardItem(
                                 )
                             }
                             Text(
-                                color = if (recentlyVisited) animatedTextColor else textColor,
+                                color = if (day == viewModel.noteList.value.recentlyVisited) animatedTextColor else textColor,
                                 text = day[Calendar.DAY_OF_MONTH].toString(),
                                 fontSize = dpToSp(dp = 18.dp),
                                 textAlign = TextAlign.Center,
@@ -240,5 +231,7 @@ fun CardItem(
 
     }
 }
+
+
 
 

@@ -97,6 +97,11 @@ dependencies {
 
     implementation "androidx.compose.foundation:foundation:1.2.0-alpha04"
 
-    implementation "com.chargemap.compose:numberpicker:0.0.12"
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
+
+    // accompanist
+    implementation "com.google.accompanist:accompanist-pager:0.24.3-alpha"
+    implementation "com.google.accompanist:accompanist-pager-indicators:0.24.3-alpha"
+
 
 }

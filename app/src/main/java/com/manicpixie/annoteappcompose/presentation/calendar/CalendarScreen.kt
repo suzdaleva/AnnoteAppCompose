@@ -13,17 +13,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ExperimentalMotionApi
-import androidx.navigation.NavController
 import com.manicpixie.annoteappcompose.R
 import com.manicpixie.annoteappcompose.presentation.calendar.components.CardDeck
 import com.manicpixie.annoteappcompose.presentation.util.dpToSp
+import com.manicpixie.annoteappcompose.ui.theme.PrimaryBlack
 
 
 @OptIn(ExperimentalMotionApi::class)
 @Composable
 fun CalendarScreen(
-    onClick: () -> Unit,
-    navController: NavController,
+    onClick: (Int?, String) -> Unit
 ) {
     val activity = (LocalContext.current as? Activity)
 
@@ -44,13 +43,13 @@ fun CalendarScreen(
                 text = stringResource(id = R.string.calendar_title),
                 style = MaterialTheme.typography.caption,
                 fontSize = dpToSp(dp = 40.dp),
-                textAlign = TextAlign.Center,
+                color = PrimaryBlack,
+                textAlign = TextAlign.Center
             )
         }
         CardDeck(
             onClick = onClick,
             modifier = Modifier.weight(1f),
-            navController = navController
         )
     }
 }

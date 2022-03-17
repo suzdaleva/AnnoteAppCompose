@@ -4,22 +4,16 @@ package com.manicpixie.annoteappcompose.presentation.spinner
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.airbnb.lottie.compose.*
 import com.manicpixie.annoteappcompose.R
 import com.manicpixie.annoteappcompose.presentation.spinner.components.InfiniteSpinner
 import com.manicpixie.annoteappcompose.presentation.util.Constants.months
-import com.manicpixie.annoteappcompose.presentation.util.Screen
 import com.manicpixie.annoteappcompose.presentation.util.dpToSp
 import com.manicpixie.annoteappcompose.ui.theme.PrimaryBlack
 import com.manicpixie.annoteappcompose.ui.theme.White
@@ -29,19 +23,8 @@ import java.util.*
 
 @Composable
 fun SpinnerScreen(
-    navController: NavController,
-    onClick: () -> Unit
+    onClick: (Int) -> Unit
 ) {
-
-
-    BackHandler {
-        onClick()
-        navController.navigate(Screen.CalendarScreen.route) {
-            popUpTo(navController.graph.findStartDestination().id) {
-                inclusive = true
-            }
-        }
-    }
 
 
     val chosenYear = remember { mutableStateOf(Calendar.getInstance().get(Calendar.YEAR) * 12) }
@@ -59,10 +42,13 @@ fun SpinnerScreen(
             .get(Calendar.YEAR)) * 12 + chosenMonth.value - Calendar.getInstance()
             .get(Calendar.MONTH)
     }
+    BackHandler {
+        onClick(calculatePage())
+    }
 
     Box(modifier = Modifier.fillMaxSize()) {
         LottieAnimation(
-            modifier = Modifier.padding(horizontal = 15.dp),
+            modifier = Modifier.padding(horizontal = 0.dp),
             composition = composition,
             progress = progress
         )
@@ -97,12 +83,7 @@ fun SpinnerScreen(
                 .width(108.dp)
                 .height(42.dp),
             onClick = {
-                onClick()
-                navController.navigate(Screen.CalendarScreen.route + "?currentPage=${calculatePage()}") {
-                    popUpTo(Screen.CalendarScreen.route) {
-                        inclusive = true
-                    }
-                }
+                onClick(calculatePage())
             },
             colors = ButtonDefaults.buttonColors(backgroundColor = PrimaryBlack)
         ) {
@@ -120,5 +101,6 @@ fun SpinnerScreen(
             )
         }
     }
+
 
 }

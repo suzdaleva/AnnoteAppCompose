@@ -1,7 +1,6 @@
 package com.manicpixie.annoteappcompose.data.repository
 
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
+
 import com.manicpixie.annoteappcompose.data.local.NoteDao
 import com.manicpixie.annoteappcompose.domain.model.Note
 import com.manicpixie.annoteappcompose.domain.repository.NoteRepository

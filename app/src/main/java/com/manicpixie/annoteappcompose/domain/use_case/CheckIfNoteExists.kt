@@ -1,6 +1,6 @@
 package com.manicpixie.annoteappcompose.domain.use_case
 
-import com.manicpixie.annoteappcompose.domain.model.Note
+
 import com.manicpixie.annoteappcompose.domain.repository.NoteRepository
 import java.util.*
 

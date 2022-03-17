@@ -20,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.constraintlayout.compose.ExperimentalMotionApi
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.manicpixie.annoteappcompose.presentation.calendar.CalendarViewModel
 import com.manicpixie.annoteappcompose.presentation.util.Constants.TOP_CARD_INDEX
 import com.manicpixie.annoteappcompose.presentation.util.Constants.TOP_Z_INDEX
@@ -158,10 +157,9 @@ fun makeCardModifier(
 )
 @Composable
 fun CardDeck(
-    onClick: () -> Unit,
+    onClick: (Int?, String) -> Unit,
     modifier: Modifier = Modifier,
     dataSource: List<Int> = (0..2399).map { 0 }.toList(),
-    navController: NavController,
     calendarViewModel: CalendarViewModel = hiltViewModel()
 ) {
     val visibleCards: Int = StrictMath.min(3, dataSource.size)
@@ -229,7 +227,6 @@ fun CardDeck(
             CardItem(
                 onClick = onClick,
                 modifier = cardModifier,
-                navController = navController,
                 cardIndex = if (index == 0) firstCard.value else firstCard.value + 1
             )
         }

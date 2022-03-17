@@ -1,21 +1,20 @@
 package com.manicpixie.annoteappcompose.ui.theme
 
 import androidx.compose.material.Typography
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.em
-import androidx.compose.ui.unit.sp
 import com.manicpixie.annoteappcompose.R
 
 val urbanistFont = FontFamily(
     listOf(
         Font(R.font.urbanist_medium, FontWeight.Medium),
         Font(R.font.urbanist_bold, FontWeight.Bold),
-        Font(R.font.urbanist_semibold, FontWeight.SemiBold)
+        Font(R.font.urbanist_semibold, FontWeight.SemiBold),
+        Font(R.font.urbanist_extralight, FontWeight.ExtraLight),
+        Font(R.font.urbanist_extrabold, FontWeight.ExtraBold)
     )
 )
 

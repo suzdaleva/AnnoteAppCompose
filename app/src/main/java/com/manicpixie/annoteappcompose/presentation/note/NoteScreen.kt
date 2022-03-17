@@ -5,11 +5,8 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.*
-
-
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -34,11 +31,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
-import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.manicpixie.annoteappcompose.R
 import com.manicpixie.annoteappcompose.presentation.util.AppButton
-import com.manicpixie.annoteappcompose.presentation.util.Screen
 import com.manicpixie.annoteappcompose.presentation.util.dpToSp
 import com.manicpixie.annoteappcompose.ui.theme.PrimaryBlack
 import com.manicpixie.annoteappcompose.ui.theme.White
@@ -70,8 +64,7 @@ enum class TextState {
 @Composable
 fun NoteScreen(
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
-    navController: NavController,
-    onClick: () -> Unit,
+    onClick: (Int) -> Unit,
     date: String,
     viewModel: NoteViewModel = hiltViewModel()
 ) {
@@ -161,16 +154,10 @@ fun NoteScreen(
 
 
     fun navigateBack() {
-        onClick()
         val currentPage = (viewModel.currentDate.value.get(Calendar.YEAR) - Calendar.getInstance()
             .get(Calendar.YEAR)) * 12 + viewModel.currentDate.value.get(Calendar.MONTH) - Calendar.getInstance()
             .get(Calendar.MONTH)
-
-        navController.navigate(Screen.CalendarScreen.route + "?currentPage=${currentPage}") {
-            popUpTo(navController.graph.findStartDestination().id) {
-                inclusive = true
-            }
-        }
+        onClick(currentPage)
     }
 
 
@@ -219,6 +206,7 @@ fun NoteScreen(
         Box(
             modifier = Modifier
                 .fillMaxSize()
+                .background(White)
                 .padding(horizontal = 30.dp)
                 .nestedScroll(connection)
         ) {
@@ -306,6 +294,7 @@ fun NoteScreen(
                         .fillMaxWidth()
                         .background(White),
                     text = date,
+                    color = PrimaryBlack,
                     style = MaterialTheme.typography.caption,
                     fontSize = dpToSp(dp = 40.dp),
                     textAlign = TextAlign.Center
@@ -338,20 +327,20 @@ fun NoteScreen(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     AppButton(
+                        modifier = Modifier.width(115.dp),
                         text = stringResource(id = R.string.delete_button),
                         fontColor = PrimaryBlack,
                         backgroundColor = White,
-                        width = 115.dp,
                         onClick = {
                             viewModel.onEvent(NoteEvent.DeleteNote)
                             navigateBack()
                         }
                     )
                     AppButton(
+                        modifier = Modifier.width(108.dp),
                         text = stringResource(id = R.string.save_button),
                         fontColor = White,
                         backgroundColor = PrimaryBlack,
-                        width = 108.dp,
                         onClick = {
                             viewModel.onEvent(NoteEvent.SaveNote)
                             if (contentState.isNotEmpty()) {

@@ -30,6 +30,7 @@ class CalendarViewModel @Inject constructor(
 
 
     init {
+        getNotes()
         savedStateHandle.get<Int>("currentPage")?.let { currentPage ->
             if (currentPage != 0) {
                 viewModelScope.launch {
@@ -37,7 +38,6 @@ class CalendarViewModel @Inject constructor(
                 }
             }
         }
-        getNotes()
     }
 
     suspend fun checkNote(date: Calendar): Boolean {
@@ -58,10 +58,14 @@ class CalendarViewModel @Inject constructor(
         return note
     }
 
-    fun getNotes() {
+
+    private fun getNotes() {
         noteUseCases.getNotes().onEach {
             _noteList.value = NotesState(
-                notes = it
+                notes = it,
+                recentlyVisited = it.lastOrNull { note ->
+                    note.modify_date.timeInMillis > Calendar.getInstance().timeInMillis - 1000
+                }?.date
             )
         }.launchIn(viewModelScope)
     }

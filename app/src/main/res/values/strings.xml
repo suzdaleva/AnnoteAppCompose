@@ -19,4 +19,13 @@ This is what’s actually fine by me, gonna stick to this solution so far.</stri
     <string name="delete_button">Delete</string>
     <string name="save_button">Save</string>
     <string name="calendar_title">Calendar</string>
+    <string name="onboarding_screen1_text1">Oh, beautiful\nperson</string>
+    <string name="onboarding_screen1_text2">Hi, there</string>
+    <string name="onboarding_screen1_text3">...And Welcome</string>
+    <string name="lets_go">yeah, whatever, let’s go</string>
+    <string name="onboarding_screen2_text1">Just a couple of steps\nbefore we continue</string>
+    <string name="onboarding_screen2_text2">So, in order to create/edit or delete a\nnote, you can press on a date</string>
+    <string name="onboarding_screen3_text1">One more thing</string>
+    <string name="onboarding_screen3_text2">You can swipe cards in any direction to\nmove forward in time</string>
+    <string name="onboarding_screen3_text3">To return to the previous page, double\ntap on the bottom of the calendar page</string>
 </resources>

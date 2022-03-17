@@ -16,6 +16,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import com.manicpixie.annoteappcompose.presentation.util.dpToSp
+import com.manicpixie.annoteappcompose.ui.theme.PrimaryBlack
 import com.manicpixie.annoteappcompose.ui.theme.spinnerGradient
 import com.manicpixie.annoteappcompose.ui.theme.urbanistFont
 import kotlinx.coroutines.launch
@@ -64,6 +65,7 @@ fun InfiniteSpinner(
                 Text(
                     modifier = modifier.alpha(if (it == listState.firstVisibleItemIndex + 1) 1f else 0.3f),
                     text = list[index].uppercase(),
+                    color = PrimaryBlack,
                     style = TextStyle(
                         textAlign = TextAlign.Center,
                         fontFamily = urbanistFont,
@@ -72,7 +74,7 @@ fun InfiniteSpinner(
                         fontSize = dpToSp(dp = 22.dp)
                     )
                 )
-                Spacer(modifier = Modifier.height(6.dp))   // item composable
+                Spacer(modifier = Modifier.height(6.dp))
             })
         }
         Spacer(
