@@ -4,10 +4,7 @@ package com.manicpixie.annoteappcompose
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.*
 import androidx.constraintlayout.compose.ExperimentalMotionApi
@@ -41,20 +38,13 @@ class MainActivity : ComponentActivity() {
                     mutableStateOf(false)
                 }
 
-                if (isShown) MainScreen() else OnboardingScreen(
+                if (isShown || isVisible.value) MainScreen() else OnboardingScreen(
                     screenHeight = screenHeight(),
                     onGettingStartedClick = {
                         isOnboardingScreenShown = true
                         isVisible.value = true
                     },
                 )
-                AnimatedVisibility(
-                    enter = fadeIn(animationSpec = tween()),
-                    visible = isVisible.value
-                ) {
-                    MainScreen()
-                }
-
             }
         }
     }

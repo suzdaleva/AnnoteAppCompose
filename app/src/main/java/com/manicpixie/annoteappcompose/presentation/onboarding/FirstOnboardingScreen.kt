@@ -47,7 +47,7 @@ fun FirstOnboardingScreen(
                 .align(Alignment.TopStart)
         ) {
             Text(
-                modifier = Modifier.padding(horizontal = 20.dp),
+                modifier = Modifier.padding(horizontal = 30.dp),
                 text = stringResource(id = R.string.onboarding_screen1_text1),
                 style = TextStyle(
                     fontFamily = urbanistFont,
@@ -58,7 +58,7 @@ fun FirstOnboardingScreen(
             )
             Spacer(modifier = Modifier.height(10.dp))
             Text(
-                modifier = Modifier.padding(horizontal = 20.dp),
+                modifier = Modifier.padding(horizontal = 30.dp),
                 text = stringResource(id = R.string.onboarding_screen1_text2),
                 style = TextStyle(
                     fontFamily = urbanistFont,
