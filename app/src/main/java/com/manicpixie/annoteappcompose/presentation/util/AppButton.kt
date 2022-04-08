@@ -21,7 +21,6 @@ fun AppButton(
     Button(
         colors = ButtonDefaults.buttonColors(backgroundColor = backgroundColor),
         onClick = onClick, modifier = modifier
-            //.width(width)
             .height(42.dp)
     ) {
         Text(

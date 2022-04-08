@@ -75,7 +75,7 @@ dependencies {
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
 
     //Lottie Compose
-    implementation "com.airbnb.android:lottie-compose:4.2.2"
+    implementation "com.airbnb.android:lottie-compose:5.0.3"
 
     //Room
     implementation "androidx.room:room-runtime:2.3.0"

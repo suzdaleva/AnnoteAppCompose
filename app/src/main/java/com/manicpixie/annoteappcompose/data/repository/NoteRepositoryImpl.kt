@@ -11,11 +11,11 @@ class NoteRepositoryImpl(private val dao: NoteDao) : NoteRepository {
 
 
     override suspend fun insert(note: Note) {
-        return dao.insert(note)
+        dao.insert(note)
     }
 
     override suspend fun deleteNote(key: Int) {
-        return dao.deleteNote(key)
+        dao.deleteNote(key)
     }
 
     override suspend fun getNoteByDate(date: Calendar): Note {
