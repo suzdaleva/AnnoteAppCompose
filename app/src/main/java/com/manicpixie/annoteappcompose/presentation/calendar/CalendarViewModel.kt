@@ -9,6 +9,8 @@ import com.manicpixie.annoteappcompose.domain.model.Note
 import com.manicpixie.annoteappcompose.domain.use_case.NoteUseCases
 import com.manicpixie.annoteappcompose.presentation.note.NotesState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -30,7 +32,6 @@ class CalendarViewModel @Inject constructor(
 
 
     init {
-        getNotes()
         savedStateHandle.get<Int>("currentPage")?.let { currentPage ->
             if (currentPage != 0) {
                 viewModelScope.launch {
@@ -59,7 +60,7 @@ class CalendarViewModel @Inject constructor(
     }
 
 
-    private fun getNotes() {
+    fun getNotes() {
         noteUseCases.getNotes().onEach {
             _noteList.value = NotesState(
                 notes = it,
@@ -67,7 +68,6 @@ class CalendarViewModel @Inject constructor(
                     note.modify_date.timeInMillis > Calendar.getInstance().timeInMillis - 1000
                 }?.date
             )
-        }.launchIn(viewModelScope)
+        }.flowOn(Dispatchers.IO).launchIn(viewModelScope)
     }
-
 }

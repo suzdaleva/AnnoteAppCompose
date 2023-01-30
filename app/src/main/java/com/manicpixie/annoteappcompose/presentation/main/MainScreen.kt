@@ -1,6 +1,7 @@
 package com.manicpixie.annoteappcompose.presentation.main
 
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -30,6 +31,7 @@ import com.manicpixie.annoteappcompose.presentation.util.noRippleClickable
 import com.manicpixie.annoteappcompose.ui.theme.White
 
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun MainScreen() {
     Surface {
@@ -77,7 +79,6 @@ fun MainScreen() {
                 }
             }
         ) {
-
             NavHost(
                 navController = navController,
                 startDestination = Screen.CalendarScreen.route + "?currentPage={currentPage}"

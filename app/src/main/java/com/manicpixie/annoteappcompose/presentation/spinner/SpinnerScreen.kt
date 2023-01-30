@@ -26,10 +26,8 @@ fun SpinnerScreen(
     onClick: (Int) -> Unit
 ) {
 
-
     val chosenYear = remember { mutableStateOf(Calendar.getInstance().get(Calendar.YEAR) * 12) }
     val chosenMonth = remember { mutableStateOf(Calendar.MONTH) }
-
 
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.spinner_anim))
     val progress by animateLottieCompositionAsState(
@@ -101,6 +99,4 @@ fun SpinnerScreen(
             )
         }
     }
-
-
 }

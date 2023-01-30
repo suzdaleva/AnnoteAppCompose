@@ -24,7 +24,6 @@ class NoteViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-
     private val _noteContent = mutableStateOf("")
     val noteContent: State<String> = _noteContent
 
@@ -61,7 +60,7 @@ class NoteViewModel @Inject constructor(
         }
         savedStateHandle.get<String>("noteDate")?.let {
             val sdf = SimpleDateFormat("dd.MM.yyyy")
-            val date: Date = sdf.parse(it)
+            val date: Date = sdf.parse(it) ?: return@let
             val calendar = Calendar.getInstance()
             calendar.time = date
             _currentDate.value = calendar.setMidnight()

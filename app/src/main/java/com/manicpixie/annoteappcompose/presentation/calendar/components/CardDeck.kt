@@ -1,24 +1,17 @@
 package com.manicpixie.annoteappcompose.presentation.calendar.components
 
 import android.annotation.SuppressLint
-import android.util.Log
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.gestures.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.*
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import androidx.constraintlayout.compose.ExperimentalMotionApi
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.manicpixie.annoteappcompose.presentation.calendar.CalendarViewModel
 import com.manicpixie.annoteappcompose.presentation.util.Constants.TOP_CARD_INDEX
@@ -26,6 +19,7 @@ import com.manicpixie.annoteappcompose.presentation.util.Constants.TOP_Z_INDEX
 import com.manicpixie.annoteappcompose.presentation.util.Constants.cardHeight
 import com.manicpixie.annoteappcompose.presentation.util.Constants.paddingOffset
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.*
 
@@ -47,7 +41,6 @@ private fun calculateOffset(idx: Int): Int {
 }
 
 
-@OptIn(ExperimentalComposeUiApi::class)
 @SuppressLint("ModifierFactoryExtensionFunction")
 fun makeCardModifier(
     scope: CoroutineScope,
@@ -57,7 +50,7 @@ fun makeCardModifier(
     offset: Animatable<Offset, AnimationVector2D>,
     animationSpec: FiniteAnimationSpec<Offset>,
     offsetY: Int,
-    rearrangeForward: () -> Unit,
+    rearrangeForward: suspend () -> Unit,
     rearrangeBackward: () -> Unit
 ): Modifier {
 
@@ -65,10 +58,12 @@ fun makeCardModifier(
     return if (cardIndex > TOP_CARD_INDEX) Modifier
         .graphicsLayer {
             translationY =
-                if (offset.value.y != 0f) min(
-                    abs(offset.value.y),
-                    paddingOffset * 1.1f
-                ) else 0f
+                if (offset.value.y != 0f) {
+                    min(
+                        abs(offset.value.y),
+                        paddingOffset * 1.1f
+                    )
+                } else 0f
             scaleX = if (offset.value.y != 0f) {
                 min(scale + (abs(offset.value.y) / 1000), 1.06f - (cardIndex * 0.03f))
             } else scale
@@ -119,7 +114,7 @@ fun makeCardModifier(
                     offset.snapTo(dragOffset)
 
 
-                    change.consumePositionChange()
+                    if (change.positionChange() != Offset.Zero) change.consume()
                     val x = when {
 
                         offset.value.x > 250 -> size.width.toFloat()
@@ -128,8 +123,8 @@ fun makeCardModifier(
                     }
                     val y = when {
 
-                        offset.value.y > 250 -> size.height.toFloat()
-                        offset.value.y < -250 -> -size.height.toFloat()
+                        offset.value.y > 250 -> size.height.toFloat() + 1000
+                        offset.value.y < -250 -> -size.height.toFloat() - 1000
                         else -> 0f
                     }
 
@@ -137,12 +132,8 @@ fun makeCardModifier(
                         targetValue = Offset(x, y),
                         animationSpec = animationSpec
                     )
-                    if (abs(offset.value.x) == size.width.toFloat() || abs(offset.value.y) == size.height.toFloat()) {
+                    if (abs(offset.value.x) == size.width.toFloat() || abs(offset.value.y) == size.height.toFloat() + 1000) {
                         rearrangeForward()
-                        offset.animateTo(
-                            targetValue = Offset(0f, 0f),
-                            animationSpec = snap()
-                        )
                     }
                 }
             }
@@ -150,11 +141,6 @@ fun makeCardModifier(
 }
 
 
-@ExperimentalMotionApi
-@OptIn(
-    ExperimentalAnimationApi::class, androidx.compose.material.ExperimentalMaterialApi::class,
-    ExperimentalComposeUiApi::class
-)
 @Composable
 fun CardDeck(
     onClick: (Int?, String) -> Unit,
@@ -166,13 +152,7 @@ fun CardDeck(
 
     val scope = rememberCoroutineScope()
     val firstCard = remember { mutableStateOf(calendarViewModel.currentPage.value) }
-
-
-    val height = LocalConfiguration.current.screenHeightDp.dp
-    val heightPx = with(LocalDensity.current) { height.roundToPx().toFloat() }
-
-    val width = LocalConfiguration.current.screenWidthDp.dp
-    val widthPx = with(LocalDensity.current) { width.roundToPx().toFloat() }
+    val secondCard = remember { mutableStateOf(calendarViewModel.currentPage.value + 1) }
 
     val offset: Animatable<Offset, AnimationVector2D> = remember {
         Animatable(
@@ -183,16 +163,20 @@ fun CardDeck(
 
     val animationSpec: FiniteAnimationSpec<Offset> = tween(
         durationMillis = 100,
-        easing = LinearEasing
+        easing = FastOutLinearInEasing
     )
 
 
-    fun rearrangeForward() {
-
+    suspend fun rearrangeForward() {
         if (firstCard.value == dataSource.size - 1) {
             firstCard.value = 0
         } else firstCard.value++
-        Log.i("log", "${firstCard.value}")
+        delay(100)
+        secondCard.value = firstCard.value + 1
+        offset.animateTo(
+            targetValue = Offset(0f, 0f),
+            animationSpec = snap()
+        )
     }
 
     fun rearrangeBackward() {
@@ -201,8 +185,7 @@ fun CardDeck(
             firstCard.value = dataSource.size - 1
         } else
             firstCard.value--
-        Log.i("log", "${firstCard.value}")
-
+        secondCard.value = firstCard.value + 1
     }
 
     Box(Modifier.fillMaxWidth()) {
@@ -227,7 +210,7 @@ fun CardDeck(
             CardItem(
                 onClick = onClick,
                 modifier = cardModifier,
-                cardIndex = if (index == 0) firstCard.value else firstCard.value + 1
+                cardIndex = if (index == 0) firstCard.value else secondCard.value
             )
         }
     }

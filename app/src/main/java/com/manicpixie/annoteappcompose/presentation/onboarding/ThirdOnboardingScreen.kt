@@ -29,14 +29,13 @@ import kotlinx.coroutines.delay
 
 
 @ExperimentalMotionApi
-@OptIn(ExperimentalAnimationApi::class, androidx.compose.material.ExperimentalMaterialApi::class)
+@OptIn(androidx.compose.material.ExperimentalMaterialApi::class)
 @Composable
 fun ThirdOnboardingScreen(
     screenHeight: Dp,
     currentPage: Int,
     onGettingStartedClick: () -> Unit
 ) {
-
 
     var currentState by remember { mutableStateOf(true) }
     val transition = updateTransition(currentState, "position")

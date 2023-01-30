@@ -1,6 +1,7 @@
 package com.manicpixie.annoteappcompose.presentation.note
 
 
+import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
@@ -26,7 +27,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
-import androidx.constraintlayout.compose.ExperimentalMotionApi
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -43,10 +43,6 @@ import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.math.roundToInt
 
-@ExperimentalAnimationApi
-@ExperimentalMotionApi
-@ExperimentalMaterialApi
-
 
 enum class TextState {
     Focused,
@@ -54,13 +50,8 @@ enum class TextState {
 }
 
 
-@OptIn(
-    ExperimentalAnimationApi::class,
-    ExperimentalMotionApi::class,
-    ExperimentalMaterialApi::class,
-    ExperimentalFoundationApi::class,
-    androidx.compose.ui.ExperimentalComposeUiApi::class
-)
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@OptIn(androidx.compose.ui.ExperimentalComposeUiApi::class)
 @Composable
 fun NoteScreen(
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
@@ -113,10 +104,7 @@ fun NoteScreen(
         }
     }
 
-
     val height = LocalConfiguration.current.screenHeightDp.dp
-    val heightPx = with(LocalDensity.current) { height.roundToPx().toFloat() }
-
 
     val lineCountAvailableInt = ((height.value - 205) / 49).roundToInt()
 
@@ -202,7 +190,6 @@ fun NoteScreen(
             )
         }
     ) {
-
         Box(
             modifier = Modifier
                 .fillMaxSize()

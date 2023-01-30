@@ -9,7 +9,6 @@ import java.util.*
 
 class NoteRepositoryImpl(private val dao: NoteDao) : NoteRepository {
 
-
     override suspend fun insert(note: Note) {
         dao.insert(note)
     }

@@ -7,7 +7,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.TextStyle
@@ -22,7 +21,6 @@ import com.manicpixie.annoteappcompose.ui.theme.urbanistFont
 import kotlinx.coroutines.launch
 
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun InfiniteSpinner(
     modifier: Modifier = Modifier,
@@ -31,14 +29,12 @@ fun InfiniteSpinner(
     onSelect: (String) -> Unit
 ) {
 
-
     val listState = rememberLazyListState(firstIndex)
     val coroutineScope = rememberCoroutineScope()
 
     val currentValue = remember {
         mutableStateOf("")
     }
-
 
     LaunchedEffect(!listState.isScrollInProgress) {
         coroutineScope.launch {

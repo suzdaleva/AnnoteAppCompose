@@ -3,13 +3,12 @@ package com.manicpixie.annoteappcompose.presentation.calendar.components
 import android.annotation.SuppressLint
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -40,7 +39,6 @@ import java.util.*
 
 
 @SuppressLint("SimpleDateFormat", "CoroutineCreationDuringComposition")
-@OptIn(ExperimentalFoundationApi::class, androidx.compose.ui.ExperimentalComposeUiApi::class)
 @Composable
 fun CardItem(
     onClick: (Int?, String) -> Unit,
@@ -53,7 +51,6 @@ fun CardItem(
 
     val calendar = (firstPageCalendarDate.clone() as Calendar).apply {
         add(Calendar.MONTH, cardIndex)
-
         set(Calendar.DAY_OF_MONTH, 1)
     }.setMidnight()
 
@@ -108,7 +105,7 @@ fun CardItem(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(White),
-                cells = GridCells.Fixed(7),
+                columns = GridCells.Fixed(7),
                 contentPadding = PaddingValues(horizontal = 2.dp, vertical = 5.dp)
             ) {
                 item {
@@ -228,7 +225,6 @@ fun CardItem(
                 )
             }
         }
-
     }
 }
 

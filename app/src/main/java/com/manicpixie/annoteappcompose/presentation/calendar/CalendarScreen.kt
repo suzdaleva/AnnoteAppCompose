@@ -6,28 +6,33 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.ExperimentalMotionApi
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.manicpixie.annoteappcompose.R
 import com.manicpixie.annoteappcompose.presentation.calendar.components.CardDeck
 import com.manicpixie.annoteappcompose.presentation.util.dpToSp
 import com.manicpixie.annoteappcompose.ui.theme.PrimaryBlack
 
 
-@OptIn(ExperimentalMotionApi::class)
 @Composable
 fun CalendarScreen(
-    onClick: (Int?, String) -> Unit
+    onClick: (Int?, String) -> Unit,
+    viewModel: CalendarViewModel = hiltViewModel()
 ) {
     val activity = (LocalContext.current as? Activity)
 
     BackHandler {
         activity?.finish()
+    }
+
+    LaunchedEffect(true) {
+        viewModel.getNotes()
     }
 
     Column(
