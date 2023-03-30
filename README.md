@@ -1,7 +1,5 @@
 # AnnoteAppCompose
 
-App on Google Play: https://play.google.com/store/apps/details?id=com.manicpixie.annoteappcompose
-
 Clean Architecture, Jetpack Compose, Hilt, Kotlin Coroutines and Flows, Lottie Animation.
  
  
